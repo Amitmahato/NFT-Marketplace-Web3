@@ -1,4 +1,4 @@
-import { NftMeta } from "../../../types/NFT";
+import { NftMeta } from "@_types/NFT";
 
 type NftItemProps = { item: NftMeta };
 
