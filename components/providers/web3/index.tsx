@@ -4,13 +4,14 @@ import React, {
   useContext,
   useState,
 } from "react";
+import { createDefualtWeb3State, Web3State } from "./utils";
 
-const Web3Context = createContext<any>(null);
+const Web3Context = createContext<Web3State>(createDefualtWeb3State());
 
 const Web3Provider: FunctionComponent<{ children: React.ReactNode }> = ({
   children,
 }) => {
-  const [web3Api, setWeb3Api] = useState<any>({ test: "Hello World!" });
+  const [web3Api, setWeb3Api] = useState<Web3State>(createDefualtWeb3State());
   return (
     <Web3Context.Provider value={web3Api}>{children}</Web3Context.Provider>
   );
