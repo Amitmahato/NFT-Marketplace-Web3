@@ -5,7 +5,7 @@ import { useRouter } from "next/router";
 type LinkProps = {
   href: string;
   children: ReactElement;
-  activeClass: string;
+  activeClass?: string;
 };
 
 const ActiveLink: FunctionComponent<LinkProps> = ({ children, ...props }) => {
@@ -19,6 +19,7 @@ const ActiveLink: FunctionComponent<LinkProps> = ({ children, ...props }) => {
     className = _defaultClass;
   }
 
+  delete props.activeClass;
   return <Link {...props}>{React.cloneElement(children, { className })}</Link>;
 };
 
