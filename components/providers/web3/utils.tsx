@@ -1,5 +1,6 @@
 import { setupHooks, Web3Hooks } from "@hooks/web3/setupHooks";
 import { MetaMaskInpageProvider } from "@metamask/providers";
+import { Web3Dependencies } from "@_types/hook";
 import { Contract, ethers, providers } from "ethers";
 
 declare global {
@@ -8,24 +9,45 @@ declare global {
   }
 }
 
-export type Web3Params = {
-  ethereum: MetaMaskInpageProvider | null;
-  provider: providers.Web3Provider | null;
-  contract: Contract | null;
+/**
+ * Generic Nullable type:
+ *  if the keys of a given interface/type has a specified type use that type or allow it to be null
+ */
+type Nullable<T> = {
+  [P in keyof T]: T[P] | null;
 };
 
 export type Web3State = {
   isLoading: boolean;
   hooks: Web3Hooks;
-} & Web3Params;
+} & Nullable<Web3Dependencies>;
 
-export const createDefualtWeb3State = (): Web3State => {
+export const createDefualtWeb3State = () => {
   return {
     isLoading: true,
     ethereum: null,
     provider: null,
     contract: null,
     hooks: setupHooks({} as any),
+  };
+};
+
+export const createWeb3State = ({
+  isLoading,
+  ethereum,
+  provider,
+  contract,
+}: Web3Dependencies & { isLoading: boolean }): Web3State => {
+  return {
+    isLoading,
+    ethereum,
+    provider,
+    contract,
+    hooks: setupHooks({
+      ethereum,
+      provider,
+      contract,
+    }),
   };
 };
 
