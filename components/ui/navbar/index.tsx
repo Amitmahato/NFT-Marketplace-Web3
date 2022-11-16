@@ -6,7 +6,7 @@ import { BellIcon, MenuIcon, XIcon } from "@heroicons/react/outline";
 import { useRouter } from "next/router";
 import Link from "next/link";
 import ActiveLink from "../link";
-import { useAccount } from "@hooks";
+import { useWeb3 } from "@providers/web3";
 
 const navigation = [
   { name: "Marketplace", href: "/" },
@@ -19,8 +19,9 @@ function classNames(...classes: string[]) {
 
 export default function Navbar() {
   const { pathname } = useRouter();
+  const { hooks } = useWeb3();
 
-  const { data, isValidating, error } = useAccount("Some Random Params");
+  const { data, isValidating, error } = hooks.useAccount("Some Random Params");
   console.log("SWR Data: ", data, isValidating, error);
 
   return (

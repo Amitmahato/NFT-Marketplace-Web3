@@ -25,6 +25,11 @@ const Web3Provider: FunctionComponent<{ children: React.ReactNode }> = ({
         provider,
         contract,
         isLoading: false,
+        hooks: setupHooks({
+          ethereum,
+          provider,
+          contract,
+        }),
       });
     };
 
