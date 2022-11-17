@@ -1,5 +1,5 @@
 import { MetaMaskInpageProvider } from "@metamask/providers";
-import { Contract, providers } from "ethers";
+import { Contract, ethers, providers } from "ethers";
 
 declare global {
   interface Window {
@@ -24,4 +24,30 @@ export const createDefualtWeb3State = (): Web3State => {
     provider: null,
     contract: null,
   };
+};
+
+const NETWORK_ID = process.env.NEXT_PUBLIC_NETWORK_ID;
+
+export const loadContract = async (
+  contractName: string,
+  provider: providers.Web3Provider
+): Promise<Contract> => {
+  if (!NETWORK_ID) {
+    return Promise.reject("Network Id is not defined");
+  }
+  const response = await fetch(`/contracts/${contractName}.json`);
+  const artifact = (await response.json()) as any;
+
+  const contractAddress = artifact.networks[NETWORK_ID].address;
+  if (contractAddress) {
+    const contract = new ethers.Contract(
+      contractAddress,
+      artifact.abi,
+      provider
+    );
+
+    return contract;
+  } else {
+    return Promise.reject(`Contract: [${contractName}] cannot be loaded!`);
+  }
 };
