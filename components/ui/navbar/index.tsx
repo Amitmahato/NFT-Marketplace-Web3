@@ -6,6 +6,7 @@ import { BellIcon, MenuIcon, XIcon } from "@heroicons/react/outline";
 import { useRouter } from "next/router";
 import Link from "next/link";
 import ActiveLink from "../link";
+import { useAccount } from "@hooks";
 
 const navigation = [
   { name: "Marketplace", href: "/" },
@@ -18,6 +19,10 @@ function classNames(...classes: string[]) {
 
 export default function Navbar() {
   const { pathname } = useRouter();
+
+  const { data, isValidating, error } = useAccount("Some Random Params");
+  console.log("SWR Data: ", data, isValidating, error);
+
   return (
     <Disclosure as="nav" className="bg-gray-800">
       {({ open }) => (
